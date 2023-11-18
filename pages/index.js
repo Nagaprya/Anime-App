@@ -17,6 +17,7 @@ import TheatersIcon from '@mui/icons-material/Theaters';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Modal from '@mui/material/Modal';
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -32,7 +33,7 @@ const modalStyle = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 600,
-  bgcolor: 'background.paper',
+  bgcolor: '#CEC2EB',
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
@@ -104,20 +105,20 @@ export default function Home() {
           <span style={{ color: "GrayText" }}>use (,) separated to enter multiple genres.</span>
         </div>
       </div>
-      <div className="flex flex-col items-center pt-20">
-        <Box sx={{ width: '90%' }}>
+      <div className="flex flex-col items-center md:px-8 pt-20">
+        <Box sx={{ width: '90%', ml:3, mr:3 }}>
           <Grid container spacing={2}>
             {response ?
-              response.map((suggestion , index) => {
+              response.map((suggestion, index) => {
                 return (
-                  <Grid item xs={3} key={index}>
-                    <Card style={{ width: 350, height: 450, display: 'flex', flexDirection: 'column' }}>
-                      {/* <CardMedia
+                  <Grid item xs={3} sx={{mt:2}} key={index}>
+                    <Card style={{ width: '75%', height: '37vh', display: 'flex', flexDirection: 'column',  backgroundColor: '#90EE90'}}>
+                      <CardMedia
                         component="img"
                         alt="green iguana"
                         height="140"
-                        image="/static/images/cards/contemplative-reptile.jpg"
-                      /> */}
+                        image="https://wallpapercave.com/wp/wp1894672.jpg"
+                      />
                       <CardContent  >
                         <Typography gutterBottom variant="h5" component="div" style={{ fontWeight: "bold", 'overflow': 'hidden', 'text-overflow': 'ellipsis', 'white-space': 'nowrap' }}>
                           {suggestion.title.toUpperCase()}
@@ -153,36 +154,50 @@ export default function Home() {
                             </Tooltip>
                           }
                         </Typography>
-                        <Button size="small" onClick={() => handleOpen(index)}>view</Button>
+                        <Button size="medium" style={{color:'black', backgroundColor:'#508D69'}} onClick={() => handleOpen(index)}>view</Button>
                       </CardContent >
                       <Modal
                         open={openModals[index]}
                         onClose={() => handleClose(index)}
                         aria-labelledby="modal-modal-title"
                         aria-describedby="modal-modal-description"
-                        >
+                      >
                         <Box sx={modalStyle}>
-                          <Typography id="modal-modal-title" variant="h4" component="h2" style={{fontWeight:"bolder", fontFamily:"sans-serif"}}>
+                          <Typography id="modal-modal-title" variant="h4" component="h2" style={{ fontWeight: "bolder", fontFamily: "sans-serif" }}>
                             {suggestion.title.toUpperCase()}
                           </Typography>
-                          <Typography variant="h6" componenet="h3" style={{fontWeight:"bold"}} >
-                            Summary:
+                          <br />
+                          <Typography variant="h6" componenet="h3" style={{ fontWeight: "bold" }} >
+                            <span style={{ fontWeight: "bold" }}>Summary: </span>
                           </Typography>
                           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                             {suggestion.description}
                           </Typography>
-                          <Typography>
-                            Release Year: {suggestion.startYr}
+                          <Typography sx={{ mt: 2 }}>
+                          <span style={{ fontWeight: "bold" }}> Genre: </span>
+                                <Typography sx={{ mt: 1 }} > 
+                                  {
+                                    JSON.parse(suggestion.tags.replace(/'/g, '"')).join(', ')
+                                  }
+                                </Typography>
+                          </Typography>
+                          <Typography sx={{ mt: 2 }}>
+                            <span style={{ fontWeight: "bold" }}>Release Year: </span> {suggestion.startYr} - {suggestion.sznOfRelease}
                           </Typography>
                           <Typography>
-                           
                           </Typography>
-                          <Typography>
-                             Episodes: {suggestion.eps}
+                          <Typography sx={{ mt: 2 }}>
+                            <span style={{ fontWeight: "bold" }}>Episodes: </span> {suggestion.eps}
                           </Typography>
-                          <Typography>
-                            Content Warning: 
-                              <Typography>{suggestion.contentWarn.length !==0? <>This Anime has content related to {suggestion.contentWarn} </>:<>U/A</> }</Typography>
+                          <Typography sx={{ mt: 2 }}>
+                            <span style={{ fontWeight: "bold" }}>Content Warning: </span>
+                              {
+                                suggestion.contentWarn.length !== 0 ?
+                                <ButtonGroup variant="text" aria-label="contained button group" sx={{ mt: 1 }} > 
+                                  {JSON.parse(suggestion.contentWarn.replace(/'/g, '"')).map(value =>
+                                    <span><Button color="error">{value}</Button></span>
+                                  )} </ButtonGroup>
+                                  : <Button variant="contained" style={{backgroundColor:'#90EE90', color:'black'}} >U/A</Button>}
                           </Typography>
                         </Box>
                       </Modal>
@@ -190,7 +205,7 @@ export default function Home() {
                   </Grid>
                 );
               }) :
-              (response === false ? <><br /><br /><div className="w-full mt-4 p-8 border border-secondary h-full text-lightGrey font-raleway">No Results found</div></> : <div />)
+              (response === false ? <><br /><br /><div className="w-full mt-4 p-8 border border-primary h-full text-lightGrey font-raleway">No Results found</div></> : <div />)
             }
           </Grid>
         </Box>

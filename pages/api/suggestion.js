@@ -23,11 +23,11 @@ try {
 
   const database = client.db('assignment');
   const collection = database.collection('cc');
-  const data = await collection.find(SearchPatternQuery).sort({ rating: -1 }).limit(2).toArray();
+  const data = await collection.find(SearchPatternQuery).sort({ rating: -1 }).limit(4).toArray();
   // console.log(SearchPatternQuery);
   ArrayList=ArrayList.concat(data);
   listCount++
-  console.log(ArrayList);
+  //console.log(ArrayList);
   if(ArrayList.length !==0 && (listCount === list.length) ) res.status(200).json(ArrayList);
   else if(listCount === list.length && ArrayList.length === 0) res.status(200).json([]);
 
