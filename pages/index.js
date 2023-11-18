@@ -14,6 +14,9 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
 import TheatersIcon from '@mui/icons-material/Theaters';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Modal from '@mui/material/Modal';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -23,11 +26,35 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 600,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 export default function Home() {
   const [animeGenre, setAnimeGenre] = useState("");
   const [response, setResponse] = useState(null);
   const [btnText, setBtnText] = useState("Get Suggestions");
+  const [openModals, setOpenModals] = React.useState([]);
+
+  const handleOpen = (index) => {
+    const updatedModals = [...openModals];
+    updatedModals[index] = true;
+    setOpenModals(updatedModals);
+  };
+
+  const handleClose = (index) => {
+    const updatedModals = [...openModals];
+    updatedModals[index] = false;
+    setOpenModals(updatedModals);
+  };
 
   const fetchAnimeSuggestions = async (e) => {
     e.preventDefault();
@@ -38,6 +65,7 @@ export default function Home() {
 
       if (res.data !== undefined && res.data.length !== 0) {
         setResponse(res.data);
+        setOpenModals(Array(res.data.length).fill(false));
       } else {
         setResponse(false);
       }
@@ -73,16 +101,17 @@ export default function Home() {
               {btnText}
             </button>
           </form>
+          <span style={{ color: "GrayText" }}>use (,) separated to enter multiple genres.</span>
         </div>
       </div>
       <div className="flex flex-col items-center pt-20">
         <Box sx={{ width: '90%' }}>
           <Grid container spacing={2}>
             {response ?
-              response.map((suggestion) => {
+              response.map((suggestion , index) => {
                 return (
-                  <Grid item xs={3}>
-                    <Card style={{width:350, height:450, display: 'flex', flexDirection: 'column'}}>
+                  <Grid item xs={3} key={index}>
+                    <Card style={{ width: 350, height: 450, display: 'flex', flexDirection: 'column' }}>
                       {/* <CardMedia
                         component="img"
                         alt="green iguana"
@@ -90,28 +119,73 @@ export default function Home() {
                         image="/static/images/cards/contemplative-reptile.jpg"
                       /> */}
                       <CardContent  >
-                        <Typography gutterBottom variant="h5" component="div" style={{fontWeight:"bold", 'overflow': 'hidden', 'text-overflow': 'ellipsis', 'white-space': 'nowrap'}}>
+                        <Typography gutterBottom variant="h5" component="div" style={{ fontWeight: "bold", 'overflow': 'hidden', 'text-overflow': 'ellipsis', 'white-space': 'nowrap' }}>
                           {suggestion.title.toUpperCase()}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" style={{
-                            'overflow': 'hidden', 
-                            'text-overflow': 'ellipsis',
-                            'display': '-webkit-box',
-                            'WebkitBoxOrient': 'vertical',
-                            'overflow': 'hidden',
-                            'WebkitLineClamp': 3}} 
+                          'overflow': 'hidden',
+                          'text-overflow': 'ellipsis',
+                          'display': '-webkit-box',
+                          'WebkitBoxOrient': 'vertical',
+                          'overflow': 'hidden',
+                          'WebkitLineClamp': 3
+                        }}
                         >
-                        {suggestion.description}
+                          {suggestion.description}
                         </Typography>
                       </CardContent>
-                      <CardContent  style={{ 
+                      <CardContent style={{
                         marginTop: 'auto',
                         display: 'flex',
-                        justifyContent: 'space-between' 
+                        justifyContent: 'space-between'
                       }} >
-                        <Typography variant="body2" color="text.secondary"> {suggestion.mediaType.toUpperCase()==='MOVIE'?<TheatersIcon />:<LiveTvIcon />}</Typography>
-                        <Button size="small">view</Button>
+                        <Typography variant="body2" color="text.secondary">
+                          {suggestion.mediaType.toUpperCase() === 'MOVIE' ?
+                            <Tooltip title="Movie">
+                              <IconButton>
+                                <TheatersIcon />
+                              </IconButton>
+                            </Tooltip> :
+                            <Tooltip title="TV & Others">
+                              <IconButton>
+                                <LiveTvIcon />
+                              </IconButton>
+                            </Tooltip>
+                          }
+                        </Typography>
+                        <Button size="small" onClick={() => handleOpen(index)}>view</Button>
                       </CardContent >
+                      <Modal
+                        open={openModals[index]}
+                        onClose={() => handleClose(index)}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                        >
+                        <Box sx={modalStyle}>
+                          <Typography id="modal-modal-title" variant="h4" component="h2" style={{fontWeight:"bolder", fontFamily:"sans-serif"}}>
+                            {suggestion.title.toUpperCase()}
+                          </Typography>
+                          <Typography variant="h6" componenet="h3" style={{fontWeight:"bold"}} >
+                            Summary:
+                          </Typography>
+                          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                            {suggestion.description}
+                          </Typography>
+                          <Typography>
+                            Release Year: {suggestion.startYr}
+                          </Typography>
+                          <Typography>
+                           
+                          </Typography>
+                          <Typography>
+                             Episodes: {suggestion.eps}
+                          </Typography>
+                          <Typography>
+                            Content Warning: 
+                              <Typography>{suggestion.contentWarn.length !==0? <>This Anime has content related to {suggestion.contentWarn} </>:<>U/A</> }</Typography>
+                          </Typography>
+                        </Box>
+                      </Modal>
                     </Card>
                   </Grid>
                 );
