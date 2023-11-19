@@ -32,7 +32,7 @@ const modalStyle = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 600,
+  width: '90%',
   bgcolor: '#CEC2EB',
   border: '2px solid #000',
   boxShadow: 24,
@@ -111,8 +111,8 @@ export default function Home() {
             {response ?
               response.map((suggestion, index) => {
                 return (
-                  <Grid item xs={3} sx={{mt:2}} key={index}>
-                    <Card style={{ width: '75%', height: '37vh', display: 'flex', flexDirection: 'column',  backgroundColor: '#90EE90'}}>
+                  <Grid item sm={3} md={3} lg={3} xs={3} sx={{mt:2}} key={index}>
+                    <Card style={{ width: '75%', display: 'flex', flexDirection: 'column',  backgroundColor: '#90EE90'}}>
                       <CardMedia
                         component="img"
                         alt="green iguana"
