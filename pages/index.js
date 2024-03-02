@@ -195,7 +195,7 @@ export default function Home() {
                                 suggestion.contentWarn.length !== 0 ?
                                 <ButtonGroup variant="text" aria-label="contained button group" sx={{ mt: 1 }} > 
                                   {JSON.parse(suggestion.contentWarn.replace(/'/g, '"')).map(value =>
-                                    <span><Button color="error">{value}</Button></span>
+                                    <span key={value} ><Button color="error">{value}</Button></span>
                                   )} </ButtonGroup>
                                   : <Button variant="contained" style={{backgroundColor:'#90EE90', color:'black'}} >U/A</Button>}
                           </Typography>
