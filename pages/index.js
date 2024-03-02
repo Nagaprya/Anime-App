@@ -1,13 +1,12 @@
+import * as React from 'react';
 import { useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
@@ -120,12 +119,12 @@ export default function Home() {
                         image="https://wallpapercave.com/wp/wp1894672.jpg"
                       />
                       <CardContent  >
-                        <Typography gutterBottom variant="h5" component="div" style={{ fontWeight: "bold", 'overflow': 'hidden', 'text-overflow': 'ellipsis', 'white-space': 'nowrap' }}>
+                        <Typography gutterBottom variant="h5" component="div" style={{ fontWeight: "bold", 'overflow': 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {suggestion.title.toUpperCase()}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" style={{
                           'overflow': 'hidden',
-                          'text-overflow': 'ellipsis',
+                          textOverflow: 'ellipsis',
                           'display': '-webkit-box',
                           'WebkitBoxOrient': 'vertical',
                           'overflow': 'hidden',
