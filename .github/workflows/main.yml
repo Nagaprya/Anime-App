@@ -14,8 +14,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          node-version: '20'
       
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -33,9 +31,7 @@ jobs:
   #   needs: build
   #   steps:
   #     - name: Checkout code
-  #       uses: actions/checkout@v2
-  #       with:
-  #         node-version: '20'
+  #       uses: actions/checkout@v4
 
   #     - name: Setup Node
   #       uses: actions/setup-node@v4
@@ -54,8 +50,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          node-version: '20'
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -74,8 +68,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          node-version: '20'
       
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -87,8 +79,6 @@ jobs:
 
       - name: SonarQube Scan
         uses: sonarsource/sonarcloud-github-action@master
-        with:
-          projectBaseDir: "joy-1998/anime-suggestion-app"
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
