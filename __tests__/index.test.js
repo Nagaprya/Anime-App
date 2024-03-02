@@ -31,7 +31,7 @@ describe('Home component', () => {
       },
     ];
 
-    axios.post.mockResolvedValueOnce({ data: mockResponse });
+    axios.post = jest.fn().mockResolvedValueOnce({ data: mockResponse });
 
     render(<Home />);
 
@@ -42,8 +42,8 @@ describe('Home component', () => {
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(screen.getByText('Sample Anime 1')).toBeInTheDocument();
-      expect(screen.getByText('Sample Anime 2')).toBeInTheDocument();
+      expect(screen.getByText('SAMPLE ANIME 1')).toBeInTheDocument();
+      expect(screen.getByText('SAMPLE ANIME 2')).toBeInTheDocument();
     });
   });
 });
