@@ -44,6 +44,7 @@ describe('Home component', () => {
     await waitFor(() => {
       expect(screen.getByText('SAMPLE ANIME 1')).toBeInTheDocument();
       expect(screen.getByText('SAMPLE ANIME 2')).toBeInTheDocument();
+      expect(screen.getByText('SAMPLE ANIME 3')).toBeInTheDocument();
     });
   });
 });
