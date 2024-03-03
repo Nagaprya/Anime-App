@@ -38,8 +38,6 @@ const modalStyle = {
   p: 4,
 };
 
-Adding this line for Build Failure
-
 export default function Home() {
   const [animeGenre, setAnimeGenre] = useState("");
   const [response, setResponse] = useState(null);
