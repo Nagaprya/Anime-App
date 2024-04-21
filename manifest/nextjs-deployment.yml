@@ -20,19 +20,57 @@ spec:
         image: docker.io/joy1998/animesuggestionapp:v1
         ports:
         - containerPort: 3000
-
 ---
-
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: anisug-rollout
+  namespace: anisug
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: anisug
+  strategy:
+    blueGreen:
+      activeService: anisug-service
+      previewService: anisug-preview-service
+      autoPromotionEnabled: true
+  template:
+    metadata:
+      labels:
+        app: anisug
+    spec:
+      containers:
+      - name: anisug
+        image: docker.io/joy1998/animesuggestionapp:latest
+        ports:
+        - containerPort: 80
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: anisug-service
   namespace: anisug
 spec:
-  selector:
-    app: anisug
   ports:
   - protocol: TCP
     port: 80
     targetPort: 3000
+  selector:
+    app: anisug
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: anisug-preview-service
+  namespace: anisug
+spec:
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+  selector:
+    app: anisug
   type: NodePort
