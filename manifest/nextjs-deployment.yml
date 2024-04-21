@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: anisug
-        image: docker.io/joy1998/animesuggestionapp:latest
+        image: docker.io/joy1998/animesuggestionapp:v1
         ports:
         - containerPort: 3000
 
